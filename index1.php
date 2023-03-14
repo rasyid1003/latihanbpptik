@@ -76,32 +76,35 @@
 		// Menghitung total harga
 		$total_harga = $hargatiket * $tiket;
 
+
 		$data = array(
 			"nama" => $nama,		
 			"nomor" => $nomor,
-            "asal" => $asal,
-            "tujuan" => $pemakaian,
-            "tarif_tujuan" => $tarif_tujuan[$tujuan],
-            "total_tagihan" => $total_harga
-        );
+			"asal" => $asal,
+			"tujuan" => $tujuan,
+			"tarif_tujuan" => $tarif_tujuan[$tujuan],
+			"total_tagihan" => $total_harga
+		);
+		
 		$json_file = "data.json";
-	$current_data = file_get_contents($json_file);
-	$array_data = json_decode($current_data, true);
-	$array_data[] = $data;
-	$final_data = json_encode($array_data, JSON_PRETTY_PRINT);
-	file_put_contents($json_file, $final_data);
-     
-        echo "<div class='container'>";
-        echo "<h2>Tagihan Pelanggan</h2>";
-        echo "<table class='table'>";
-        echo "<tr><td>Nama Pelanggan:</td><td>$nama</td></tr>";
-        echo "<tr><td>Nomor Pelanggan:</td><td>$nomor</td></tr>";
-        echo "<tr><td>asal Pemakaian:</td><td>$asal</td></tr>";
-        echo "<tr><td>Pemakaian:</td><td>$tujuan</td></tr>";
-        echo "<tr><td>Tarif Pemakaian:</td><td>$tarif_tujuan</td></tr>";
-        echo "<tr><td>Total Tagihan:</td><td></td>$total_harga</tr>";
-        echo "</table>";
-        echo "</div>";
+		$current_data = file_get_contents($json_file);
+		$array_data = json_decode($current_data, true);
+		$array_data[] = $data;
+		$final_data = json_encode($array_data, JSON_PRETTY_PRINT);
+		file_put_contents($json_file, $final_data);
+		 
+		echo "<div class='container'>";
+		echo "<h2>Tagihan Pelanggan</h2>";
+		echo "<table class='table'>";
+		echo "<tr><td>Nama Pelanggan:</td><td>$nama</td></tr>";
+		echo "<tr><td>Nomor Pelanggan:</td><td>$nomor</td></tr>";
+		echo "<tr><td>Asal Tujuan:</td><td>$asal</td></tr>";
+		echo "<tr><td>Tujuan:</td><td>$tujuan</td></tr>";
+		echo "<tr><td>Harga Tiket:</td><td>$tiket</td></tr>";
+		echo "<tr><td>Pajak:</td><td>$hargatiket</td></tr>";
+		echo "<tr><td>Harga Tiket:</td><td>$total_harga</td></tr>";
+		echo "</table>";
+		echo "</div>";
 	}
 	?>
 	
