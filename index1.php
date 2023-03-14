@@ -26,10 +26,10 @@
 			<div class="form-group">
 				<label for="asal">Bandara Asal:</label>
 				<select class="form-control" id="asal" name="asal">
-					<option value="A">Soekarno-Hatta (CGK)</option>
-					<option value="B">Husein Sastranegara (BDO)</option>
-					<option value="C">Abdul Rachman Saleh (MLG)</option>
-					<option value="D">Juanda (SUB) </option>
+					<option value="CGK">Soekarno-Hatta (CGK)</option>
+					<option value="BDO">Husein Sastranegara (BDO)</option>
+					<option value="MLG">Abdul Rachman Saleh (MLG)</option>
+					<option value="SUB">Juanda (SUB) </option>
 				</select>
 				</div>
 				<div class="form-group">
@@ -43,47 +43,48 @@
 				</div>
 			
 			<div class="form-group">
-				<label for="pemakaian">Harga tiket:</label>
-				<input type="text" class="form-control" id="pemakaian" name="pemakaian">
+				<label for="tiket">Harga tiket:</label>
+				<input type="text" class="form-control" id="tiket" name="tiket">
 			</div>
 			<button type="submit" class="btn btn-success">Submit</button>
 		</form>
 	</div>
 
-	<?php
-	
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		
+	<?php 
+	if ($_SERVER["REQUEST_METHOD"] ==  "POST"){
 		$nama = $_POST["nama"];
 		$nomor = $_POST["nomor"];
-		$lokasi = $_POST["lokasi"];
 		$asal = $_POST["asal"];
-		$pemakaian = $_POST["pemakaian"];
+		$tujuan = $_POST["tujuan"];
+		$tiket = $_POST["tiket"];
 
-		
 		$tarif_tujuan = array(
-			"DPS" => 1500,
-			"UPG" => 2000,
-			"INX" => 2500,
-			"BTJ" => 3000
+			"DPS" => 80000,
+			"UPG" => 70000,
+			"INX" => 90000,
+			"BTJ" => 70000
 		);
 
+		$tarif_asal = array(
+			"CGK" => 50000,
+			"BDO" => 70000,
+			"MLG" => 90000,
+			"SUB" => 70000
+		);
+		$hargatiket = $tarif_tujuan[$tujuan] + $tarif_asal[$asal];
 		
-		$tarif_pemakaian = $tarif_tujuan[$asal] * $pemakaian;
-		$total_tagihan = $tarif_pemakaian + 1195 + 3000 + 4400;
+		// Menghitung total harga
+		$total_harga = $hargatiket * $tiket;
 
-	
 		$data = array(
-			"nama" => $nama,		"nomor" => $nomor,
-            
+			"nama" => $nama,		
+			"nomor" => $nomor,
             "asal" => $asal,
-            "pemakaian" => $pemakaian,
-            "tarif_pemakaian" => $tarif_pemakaian,
-            "total_tagihan" => $total_tagihan
+            "tujuan" => $pemakaian,
+            "tarif_tujuan" => $tarif_tujuan[$tujuan],
+            "total_tagihan" => $total_harga
         );
-    
-    
-        $json_file = "data.json";
+		$json_file = "data.json";
 	$current_data = file_get_contents($json_file);
 	$array_data = json_decode($current_data, true);
 	$array_data[] = $data;
@@ -95,15 +96,15 @@
         echo "<table class='table'>";
         echo "<tr><td>Nama Pelanggan:</td><td>$nama</td></tr>";
         echo "<tr><td>Nomor Pelanggan:</td><td>$nomor</td></tr>";
-        echo "<tr><td>Lokasi:</td><td>$lokasi</td></tr>";
         echo "<tr><td>asal Pemakaian:</td><td>$asal</td></tr>";
-        echo "<tr><td>Pemakaian:</td><td>$pemakaian</td></tr>";
-        echo "<tr><td>Tarif Pemakaian:</td><td>$tarif_pemakaian</td></tr>";
-        echo "<tr><td>Total Tagihan:</td><td>$total_tagihan</td></tr>";
+        echo "<tr><td>Pemakaian:</td><td>$tujuan</td></tr>";
+        echo "<tr><td>Tarif Pemakaian:</td><td>$tarif_tujuan</td></tr>";
+        echo "<tr><td>Total Tagihan:</td><td></td>$total_harga</tr>";
         echo "</table>";
         echo "</div>";
-    }
-    ?>
+	}
+	?>
+	
     
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
